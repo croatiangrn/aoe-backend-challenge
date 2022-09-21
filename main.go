@@ -1,24 +1,30 @@
 package main
 
 import (
-	"fmt"
+	"github.com/croatiangrn/aoe-backend-challenge/app"
 	"github.com/gin-gonic/gin"
 	"log"
+	"os"
 )
 
-func test() {
+const SuperHeroesJSONPath = "superheroes.json"
 
-	fmt.Println("")
+func test() {
 }
 
 func main() {
+	app.Config = app.NewApplicationConfig(SuperHeroesJSONPath)
+
+	if _, err := os.Stat(SuperHeroesJSONPath); err != nil {
+		log.Fatalf("Error while opening superheroes.json: %s", err)
+	}
+
 	test()
+
 	r := gin.Default()
 
-	err := r.Run(":8008")
-
-	if err != nil {
-		log.Fatalln("Couldn't run server")
+	if err := r.Run(":8008"); err != nil {
+		log.Fatalf("Couldn't run server: %s", err)
 		return
 	}
 }
