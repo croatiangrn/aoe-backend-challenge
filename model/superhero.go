@@ -28,17 +28,17 @@ type SuperHero struct {
 	Superpowers []string          `json:"superpowers"`
 }
 
-func (i *SuperHero) Validate() error {
-	for j := range i.Superpowers {
-		if _, ok := allowedSuperPowersMap[i.Superpowers[j]]; !ok {
-			return fmt.Errorf("superpower %q is not allowed", i.Superpowers[j])
+func (s *SuperHero) Validate() error {
+	for j := range s.Superpowers {
+		if _, ok := allowedSuperPowersMap[s.Superpowers[j]]; !ok {
+			return fmt.Errorf("superpower %q is not allowed", s.Superpowers[j])
 		}
 	}
 
 	return nil
 }
 
-func (i *SuperHero) Save() error {
+func (s *SuperHero) Save() error {
 	jsonFileBytes, err := ioutil.ReadFile(app.Config.SuperHeroesJSONPath())
 	if err != nil {
 		return errors.WithStack(err)
@@ -49,7 +49,7 @@ func (i *SuperHero) Save() error {
 		return errors.WithStack(err)
 	}
 
-	superHeroes = append(superHeroes, *i)
+	superHeroes = append(superHeroes, *s)
 
 	superHeroesBytes, err := json.Marshal(superHeroes)
 	if err != nil {
